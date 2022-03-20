@@ -2,6 +2,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg as FigCanvasTk
 from tkinter import *
 from plot import Plot
 import threading
+from adaline import Adaline
+from archive import getX
 
 Font_tuple = ("Comic Sans MS", 20, "bold")
 
@@ -67,16 +69,44 @@ class GUI:
         self.mainwindow.mainloop()
 
     def drawInputs(self):
-        if self.plotInput.loadInputs():
+        YfromInput = getX()
+        if self.plotInput.loadInputs(YfromInput):
             self.start_button["state"] = NORMAL
             self.noise_button["state"] = NORMAL
         else:
             self.start_button["state"] = DISABLED
             self.noise_button["state"] = DISABLED
+        self.plotOutput.cleanPoints()
         self.canvasInput.draw()
+        self.canvasOutput.draw()
 
     def addNoise(self):
         self.plotInput.addNoise(float(self.noise_gui.get()))
         self.canvasInput.draw()
 
-GUI()
+    def processing(self):
+        eta = float(self.eta_gui.get())
+        a = float(self.a_gui.get())
+        numX = int(self.x_gui.get())
+
+        YfromInput = self.plotInput.Y
+        neuron = Adaline(numX, a, eta)
+
+        YfromOutput = []
+        for i in range(numX):
+            YfromInput.append(YfromInput[i])
+        self.plotOutput.loadInputs(YfromOutput)
+        self.canvasOutput.draw()
+        print("0")
+        #Learning stage
+        for i in range(len(YfromInput)):
+            print("1")
+            pattern = [1]
+            if i + numX >= len(YfromInput):
+                break
+            for j in range(i, i + numX):
+                pattern.append(YfromInput[j])
+            YfromOutput.append(neuron.learning(pattern,YfromInput[i + numX]))
+            self.plotOutput.cleanPoints()
+            self.plotOutput.loadInputs(YfromOutput)
+            self.canvasOutput.draw()

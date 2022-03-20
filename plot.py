@@ -1,11 +1,11 @@
 from telnetlib import SE
 import matplotlib.pyplot as plt
 import numpy as np
-from archive import getX
 import random
 
 class Plot():
     def __init__(self, title, xlabel, ylabel):
+        self.Y = []
         with plt.rc_context({'axes.edgecolor':'black', 'xtick.color':'red', 'ytick.color':'green', 'figure.facecolor':'#242526'}):
             self.fig, self.ax= plt.subplots()
             self.title = title
@@ -14,8 +14,8 @@ class Plot():
             self.drawTemplate()
 
 
-    def loadInputs(self):
-        self.Y = getX()
+    def loadInputs(self, Y):
+        self.Y = Y
         self.drawPoints()
         return len(self.Y)
 
@@ -47,4 +47,3 @@ class Plot():
         self.cleanPoints()
         X = np.arange(0,len(self.Y),1)
         self.ax.plot(X,self.Y, 'r')
-
