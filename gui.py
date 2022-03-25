@@ -57,8 +57,8 @@ class GUI:
         self.start_button = Button(self.mainwindow, text="Start", bg='#ABABAB', command=lambda:threading.Thread(target=self.processing).start(), state=DISABLED, font = Font_tuple)
         self.start_button.place(x=1500, y=700)
 
-        self.start_button = Button(self.mainwindow, text="X", bg='#AC2F40', command=self.exit, font = Font_tuple)
-        self.start_button.place(x=1880, y=0)
+        self.exit_button = Button(self.mainwindow, text="X", bg='#AC2F40', command=self.exit, font = Font_tuple)
+        self.exit_button.place(x=1880, y=0)
 
         ##Add Noise Section
         self.noise_label = Label(self.mainwindow, text = "Add Noise: ", bg='#242526', fg= "white", font = Font_tuple)
@@ -98,20 +98,18 @@ class GUI:
 
         YfromOutput = []
         for i in range(numX):
-            YfromInput.append(YfromInput[i])
+            YfromOutput.append(YfromInput[i])
         self.plotOutput.loadInputs(YfromOutput)
         self.canvasOutput.draw()
-        print("0")
+
         #Learning stage
         for i in range(len(YfromInput)):
-            print("1")
             pattern = [1]
             if i + numX >= len(YfromInput):
                 break
             for j in range(i, i + numX):
                 pattern.append(YfromInput[j])
             YfromOutput.append(neuron.learning(pattern,YfromInput[i + numX]))
-            self.plotOutput.cleanPoints()
             self.plotOutput.loadInputs(YfromOutput)
             self.canvasOutput.draw()
 
