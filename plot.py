@@ -6,6 +6,7 @@ import random
 class Plot():
     def __init__(self, title, xlabel, ylabel):
         self.Y = []
+        self.YOut = []
         with plt.rc_context({'axes.edgecolor':'black', 'xtick.color':'red', 'ytick.color':'green', 'figure.facecolor':'#242526'}):
             self.fig, self.ax= plt.subplots()
             self.title = title
@@ -18,6 +19,12 @@ class Plot():
         self.Y = Y
         self.drawPoints()
         return len(self.Y)
+
+    def loadInputsWithDiff(self, YOut, YInp):
+        self.Y = YInp
+        self.YOut = YOut
+        self.drawPoints()
+        return len(self.YOut)
 
     def cleanPoints(self):
         self.ax.cla()
@@ -47,3 +54,6 @@ class Plot():
         self.cleanPoints()
         X = np.arange(0,len(self.Y),1)
         self.ax.plot(X,self.Y, 'r')
+        if len(self.YOut):
+            Xx = np.arange(0,len(self.YOut),1)
+            self.ax.plot(Xx,self.YOut, 'g')

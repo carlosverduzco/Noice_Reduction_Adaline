@@ -99,7 +99,7 @@ class GUI:
         YfromOutput = []
         for i in range(numX):
             YfromOutput.append(YfromInput[i])
-        self.plotOutput.loadInputs(YfromOutput)
+        self.plotOutput.loadInputsWithDiff(YfromOutput, YfromInput)
         self.canvasOutput.draw()
 
         #Learning stage
@@ -110,7 +110,7 @@ class GUI:
             for j in range(i, i + numX):
                 pattern.append(YfromInput[j])
             YfromOutput.append(neuron.learning(pattern,YfromInput[i + numX]))
-            self.plotOutput.loadInputs(YfromOutput)
+            self.plotOutput.loadInputsWithDiff(YfromOutput, YfromInput)
             self.canvasOutput.draw()
 
     def exit(self):
